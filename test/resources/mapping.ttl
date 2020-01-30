@@ -1,0 +1,64 @@
+@prefix :      <http://www.example.org/my-db/> .
+@prefix rr:    <http://www.w3.org/ns/r2rml#> .
+
+:PERSON-TriplesMap  rr:logicalTable  [ rr:tableName
+                          "PERSON" ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "LNAME" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/PERSON#LNAME>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "FNAME" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/PERSON#FNAME>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "ID" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/PERSON#ID>
+                               ] ;
+        rr:subjectMap          [ rr:class     :PERSON ;
+                                 rr:template  "http://www.example.org/my-db/PERSON/ID={ID}"
+                               ] .
+
+:TRIANGLE-TriplesMap  rr:logicalTable  [ rr:tableName
+                          "TRIANGLE" ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "ANGLE3" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/TRIANGLE#ANGLE3>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "ANGLE2" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/TRIANGLE#ANGLE2>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "ANGLE1" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/TRIANGLE#ANGLE1>
+                               ] ;
+        rr:subjectMap          [ rr:class     :TRIANGLE ;
+                                 rr:template  "http://www.example.org/my-db/TRIANGLE/ANGLE1={ANGLE1};ANGLE2={ANGLE2}"
+                               ] .
+
+:LIKES-TriplesMap  rr:logicalTable  [ rr:tableName
+                          "LIKES" ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:joinCondition     [ rr:child   "ANGLE2" ;
+                                                                        rr:parent  "ANGLE2"
+                                                                      ] ;
+                                                 rr:joinCondition     [ rr:child   "ANGLE1" ;
+                                                                        rr:parent  "ANGLE1"
+                                                                      ] ;
+                                                 rr:parentTriplesMap  :TRIANGLE-TriplesMap
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/LIKES#ref-ANGLE1;ANGLE2>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:joinCondition     [ rr:child   "PERSON_ID" ;
+                                                                        rr:parent  "ID"
+                                                                      ] ;
+                                                 rr:parentTriplesMap  :PERSON-TriplesMap
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/LIKES#ref-PERSON_ID>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "ANGLE2" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/LIKES#ANGLE2>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "ANGLE1" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/LIKES#ANGLE1>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "PERSON_ID" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/LIKES#PERSON_ID>
+                               ] ;
+        rr:subjectMap          [ rr:class     :LIKES ;
+                                 rr:template  "http://www.example.org/my-db/LIKES/PERSON_ID={PERSON_ID};ANGLE1={ANGLE1};ANGLE2={ANGLE2}"
+                               ] .

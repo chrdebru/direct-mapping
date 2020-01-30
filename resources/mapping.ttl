@@ -1,0 +1,78 @@
+@prefix :      <http://www.example.org/my-db/> .
+@prefix rr:    <http://www.w3.org/ns/r2rml#> .
+
+:triangle-TriplesMap  rr:logicalTable  [ rr:tableName
+                          "triangle" ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "angle3" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/triangle#angle3>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "angle2" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/triangle#angle2>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "angle1" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/triangle#angle1>
+                               ] ;
+        rr:subjectMap          [ rr:class     :triangle ;
+                                 rr:template  "http://www.example.org/my-db/triangle/angle1={angle1};angle2={angle2}"
+                               ] .
+
+:person-TriplesMap  rr:logicalTable  [ rr:tableName
+                          "person" ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "lname" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/person#lname>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column  "fname" ] ;
+                                 rr:predicate  <http://www.example.org/my-db/person#fname>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "id" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/person#id>
+                               ] ;
+        rr:subjectMap          [ rr:class     :person ;
+                                 rr:template  "http://www.example.org/my-db/person/id={id}"
+                               ] .
+
+:likes-TriplesMap  rr:logicalTable  [ rr:tableName
+                          "likes" ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:joinCondition     [ rr:child   "angle2" ;
+                                                                        rr:parent  "angle2"
+                                                                      ] ;
+                                                 rr:joinCondition     [ rr:child   "angle1" ;
+                                                                        rr:parent  "angle1"
+                                                                      ] ;
+                                                 rr:parentTriplesMap  :triangle-TriplesMap
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/likes#ref-angle1;angle2>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:joinCondition     [ rr:child   "person_id" ;
+                                                                        rr:parent  "id"
+                                                                      ] ;
+                                                 rr:parentTriplesMap  :person-TriplesMap
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/likes#ref-person_id>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "angle2" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/likes#angle2>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "angle1" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/likes#angle1>
+                               ] ;
+        rr:predicateObjectMap  [ rr:objectMap  [ rr:column    "person_id" ;
+                                                 rr:datatype  <http://www.w3.org/2001/XMLSchema#integer>
+                                               ] ;
+                                 rr:predicate  <http://www.example.org/my-db/likes#person_id>
+                               ] ;
+        rr:subjectMap          [ rr:class     :likes ;
+                                 rr:template  "http://www.example.org/my-db/likes/person_id={person_id};angle1={angle1};angle2={angle2}"
+                               ] .
